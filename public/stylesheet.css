@@ -1,4 +1,13 @@
 body {
   display: flex;
   gap: 40px;
+  align-items: flex-start;
+}
+#ship-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 150px;
+  cursor:pointer;
+  color: blue;
 }
