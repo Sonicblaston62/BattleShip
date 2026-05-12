@@ -1,4 +1,5 @@
 let isHorizontal = true;
+let gameStarted = false;
 let selectedSize = null;
 let currentPlayer = 1; 
 let placedShips = [];
@@ -17,12 +18,20 @@ function createBoard(id) {
       cell.dataset.row = row;
       cell.dataset.col = col;
       cell.addEventListener('click', function() {
-        const targetBoard = currentPlayer === 1 ? 'board1' : 'board2';
-        if (selectedSize !== null && id === targetBoard) {
-          if (placedShips.includes(selectedSize)) return;
-          placeShip(board, cell.dataset.row, cell.dataset.col, selectedSize);
-          placedShips.push(selectedSize);
-          selectedSize = null;
+        if (!gameStarted) {
+          // placement phase - existing code
+          const targetBoard = currentPlayer === 1 ? 'board1' : 'board2';
+          if (selectedSize !== null && id === targetBoard) {
+            if (placedShips.includes(selectedSize)) return;
+            placeShip(board, cell.dataset.row, cell.dataset.col, selectedSize);
+            placedShips.push(selectedSize);
+            selectedSize = null;
+          }
+        } else {
+          // shooting phase
+          const enemyBoard = currentPlayer === 1 ? 'board2' : 'board1';
+          if (id !== enemyBoard) return;
+          shoot(cell);
         }
       });
       board.appendChild(cell);
@@ -65,7 +74,8 @@ document.getElementById('rotate').addEventListener('click', function() {
 document.getElementById('clear').addEventListener('click', function() {
   placedShips = [];
   selectedSize = null;
-  document.querySelectorAll('#board1 div').forEach(function(cell) {
+  const targetBoard = currentPlayer === 1 ? '#board1' : '#board2';
+  document.querySelectorAll(targetBoard + ' div').forEach(function(cell) {
     cell.style.backgroundColor = '';
   });
 });
@@ -80,8 +90,22 @@ document.getElementById('ready').addEventListener('click', function() {
     selectedSize = null;
     alert('Player 2, place your ships');
   } else if (currentPlayer === 2) {
-    currentPlayer = null;
-    alert('Both players ready. Game start!');
+    startGame();
     // Shooting commence!
   }
 });
+function startGame() {
+  currentPlayer = 1;
+  alert('Let the shooting commence!');
+  gameStarted = true;
+}
+function shoot(cell) {
+  if (cell.style.backgroundColor === 'grey') {
+    alert('You hit one!');
+    cell.style.backgroundColor = 'red';
+  } else {
+    cell.style.backgroundColor = 'lightBlue';
+  
+  }
+  currentPlayer = currentPlayer === 1 ? 2 : 1;  }
+
