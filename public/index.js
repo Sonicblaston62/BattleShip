@@ -100,12 +100,14 @@ function startGame() {
   gameStarted = true;
 }
 function shoot(cell) {
-  if (cell.style.backgroundColor === 'grey') {
-    alert('You hit one!');
-    cell.style.backgroundColor = 'red';
-  } else {
-    cell.style.backgroundColor = 'lightBlue';
-  
+  if (cell.style.backgroundColor === 'crimson' || cell.style.backgroundColor === 'lightblue') return;
+    if (cell.style.backgroundColor === 'grey') {
+      alert('You hit one!');
+      cell.style.backgroundColor = 'crimson';
+    } else {
+      cell.style.backgroundColor = 'lightblue';
+    
+    }
+    currentPlayer = currentPlayer === 1 ? 2 : 1;
   }
-  currentPlayer = currentPlayer === 1 ? 2 : 1;  }
 
