@@ -1,3 +1,5 @@
+let hits1 = 0
+let hits2 = 0
 let isHorizontal = true;
 let gameStarted = false;
 let selectedSize = null;
@@ -102,12 +104,29 @@ function startGame() {
 function shoot(cell) {
   if (cell.style.backgroundColor === 'crimson' || cell.style.backgroundColor === 'lightblue') return;
     if (cell.style.backgroundColor === 'grey') {
-      alert('You hit one!');
       cell.style.backgroundColor = 'crimson';
+      if (currentPlayer === 1) {
+        console.log('hits1:', hits1, 'hits2:', hits2, 'currentPlayer:', currentPlayer);
+        hits2++;
+        if (hits2 === 15) {
+          youWin('player 1');
+        }
+      }
+      else {
+        console.log('hits1:', hits1, 'hits2:', hits2, 'currentPlayer:', currentPlayer);
+        hits1++;
+        if (hits1 === 15) {
+          youWin('player 2');
+        }
+      }
     } else {
       cell.style.backgroundColor = 'lightblue';
     
     }
     currentPlayer = currentPlayer === 1 ? 2 : 1;
+  }
+  function youWin(player) {
+    alert(player + ' Wins!');
+    gameStarted = false;
   }
 
