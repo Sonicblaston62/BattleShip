@@ -1,5 +1,6 @@
 let isHorizontal = true;
 let selectedSize = null;
+let currentPlayer = 1; 
 let placedShips = [];
 
 function createBoard(id) {
@@ -16,7 +17,8 @@ function createBoard(id) {
       cell.dataset.row = row;
       cell.dataset.col = col;
       cell.addEventListener('click', function() {
-        if (selectedSize !== null && id === 'board1') {
+        const targetBoard = currentPlayer === 1 ? 'board1' : 'board2';
+        if (selectedSize !== null && id === targetBoard) {
           if (placedShips.includes(selectedSize)) return;
           placeShip(board, cell.dataset.row, cell.dataset.col, selectedSize);
           placedShips.push(selectedSize);
@@ -66,4 +68,20 @@ document.getElementById('clear').addEventListener('click', function() {
   document.querySelectorAll('#board1 div').forEach(function(cell) {
     cell.style.backgroundColor = '';
   });
+});
+document.getElementById('ready').addEventListener('click', function() {
+  if (placedShips.length < 5) {
+    alert('Place all ships first');
+    return;
+  }
+  if (currentPlayer === 1) {
+    currentPlayer = 2;
+    placedShips = [];
+    selectedSize = null;
+    alert('Player 2, place your ships');
+  } else if (currentPlayer === 2) {
+    currentPlayer = null;
+    alert('Both players ready. Game start!');
+    // Shooting commence!
+  }
 });
